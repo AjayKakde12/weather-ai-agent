@@ -1,0 +1,25 @@
+{
+  "name": "my-agent",
+  "version": "1.0.0",
+  "main": "agent.ts",
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "npx @google/adk-devtools run agent.ts",
+    "web": "npx @google/adk-devtools web",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@google/adk": "^0.2.1",
+    "@google/adk-devtools": "^0.2.1",
+    "dotenv": "^17.2.3",
+    "zod": "^3.25.17"
+  }
+}
