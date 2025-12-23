@@ -1,4 +1,5 @@
-import { FunctionTool, LlmAgent } from '@google/adk'
+import { FunctionTool, LlmAgent, InMemoryMemoryService, Runner } from '@google/adk'
+import { Content } from '@google/genai'
 import { z } from 'zod'
 import * as dotenv from 'dotenv';
 import { WeatherAPIResponseInterface } from "./types/response.interface";
@@ -6,7 +7,10 @@ dotenv.config();
 
 const getCityWeather = new FunctionTool({
     name: 'get_current_weather',
-    description: 'Returns the temperature of specified city in Celcius',
+    description: `Returns a JSON object containing weather information.
+                    Includes a 'status' key ('success' or 'error').
+                    If 'success' includes a 'report' key with weather details.
+                    If 'error', includes an 'error_message' key.`,
     parameters: z.object({
         city: z.string().describe('The name of the city for which to retrieve the teperature')
     }) as any,
@@ -30,7 +34,10 @@ export const rootAgent = new LlmAgent({
     name: 'weather_agent',
     model:'gemini-2.5-flash',
     description: 'An agent that provides current temperature information for a specified city.',
-    instruction: 'You are a helpful agent that provides current temperature information for a specified city using the get_current_time function.',
+    instruction: `You are a helpful weather assistant.
+        When the user asks for the weather in a specific city, use the get_current_weather tool to fetch the temperature information.
+        If the tool returns an error, inform the user politely.
+        If the tool is successful, present the weather report clearly to the user.`,
     tools: [getCityWeather],
 })
 
